@@ -5,10 +5,11 @@ import 'package:movie_app/services/api_call.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   ApiClient apiClient = ApiClient();
+
   MovieBloc() : super(const MovieInit()) {
-      on<RequestGetMovieCategories>((event, emit) async {
-        await _handleGetCategories(emit);
-      });
+    on<RequestGetMovieCategories>((event, emit) async {
+      await _handleGetCategories(emit);
+    });
   }
 
   _handleGetCategories(Emitter emit) async {
@@ -20,5 +21,24 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       emit(MovieLoadError(message: e.toString()));
     }
   }
+}
 
+class BannerBloc extends Bloc<BannerEvent, BannerState> {
+  ApiClient apiClient = ApiClient();
+
+  BannerBloc() : super(const BannerInit()) {
+    on<RequestGetBanner>((event, emit) async {
+      await _handleGetBanner(emit);
+    });
+  }
+
+  _handleGetBanner(Emitter emit) async {
+    emit(const BannerLoading());
+    try {
+      final response = await apiClient.getBannerList();
+      emit(BannerLoadSuccess(banner: response));
+    } catch (e) {
+      emit(BannerLoadError(message: e.toString()));
+    }
+  }
 }

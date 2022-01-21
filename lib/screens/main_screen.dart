@@ -20,6 +20,9 @@ class _MainScreenState extends State<MainScreen>
   // Categories
   List<Genres> _genres = [];
 
+  //Banner Movie
+  List<Banner> _banner = [];
+
   // Request call categories
   _requestCategories() async {
     BlocProvider.of<MovieBloc>(context).add(const RequestGetMovieCategories());
@@ -161,11 +164,12 @@ class _MainScreenState extends State<MainScreen>
     return ListView.builder(
       scrollDirection: Axis.horizontal,
         itemBuilder: (context, index){
+        final banner = _banner[index];
           return Column(
             children: [
               Container(
-
-              ),
+                  child: ,
+              )
             ],
           );
         }
