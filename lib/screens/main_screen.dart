@@ -134,7 +134,7 @@ class _MainScreenState extends State<MainScreen>
   //Movie Genre
   Widget _movieGenre(BuildContext context) {
     return SizedBox(
-      height: 50,
+      height: 65,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: _genres.length,
@@ -153,6 +153,22 @@ class _MainScreenState extends State<MainScreen>
               ),
             );
           }),
+    );
+  }
+
+  //Suggest List
+  Widget _suggestList(BuildContext context){
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index){
+          return Column(
+            children: [
+              Container(
+
+              ),
+            ],
+          );
+        }
     );
   }
 }
