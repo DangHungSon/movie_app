@@ -15,16 +15,3 @@ class RequestGetMovieCategories extends MovieEvent {
   List<Object?> get props => [];
 }
 
-abstract class BannerEvent extends Equatable{
-  const BannerEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class RequestGetBanner extends BannerEvent{
-  const RequestGetBanner();
-
-  @override
-  List<Object?> get props => [];
-}

@@ -21,10 +21,10 @@ class ApiClient extends ApiInterface{
   }
 
   @override
-  Future<Banner> getBannerList() async {
-    final response = await http.get(Uri.parse(baseUrl + suggestListUrl + '?api_key=$apiKey' + '&language=en-US'));
+  Future<MovieBanner> getBannerList() async {
+    final response = await http.get(Uri.parse(baseUrl + suggestListUrl + '?api_key=$apiKey' + '&language=en-US' + '&' + page));
     if (response.statusCode == 200) {
-      return Banner.fromJson(json.decode(response.body));
+      return MovieBanner.fromJson(json.decode(response.body));
     } else {
       var message = response.body;
       print(message);

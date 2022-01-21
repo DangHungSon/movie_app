@@ -3,3 +3,4 @@ const String baseUrl = 'https://api.themoviedb.org/3/';
 const String categoryUrl = 'genre/movie/list';
 
 const String suggestListUrl = 'movie/now_playing';
+const String page = 'page=1';

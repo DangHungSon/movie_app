@@ -1,8 +1,13 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/blocs/movie_bloc/movie_bloc.dart';
-import 'package:movie_app/blocs/movie_bloc/movie_events.dart';
-import 'package:movie_app/blocs/movie_bloc/movie_states.dart';
+import 'package:movie_app/blocs/banner_bloc/banner_bloc.dart';
+import 'package:movie_app/blocs/banner_bloc/banner_events.dart';
+import 'package:movie_app/blocs/banner_bloc/banner_states.dart';
+import 'package:movie_app/blocs/genre_bloc/genre_bloc.dart';
+import 'package:movie_app/blocs/genre_bloc/genre_events.dart';
+import 'package:movie_app/blocs/genre_bloc/genre_states.dart';
+import 'package:movie_app/models/banner_model.dart';
 import 'package:movie_app/models/movie_genre_model.dart';
 
 class MainScreen extends StatefulWidget {
@@ -21,11 +26,16 @@ class _MainScreenState extends State<MainScreen>
   List<Genres> _genres = [];
 
   //Banner Movie
-  List<Banner> _banner = [];
+  List<Results> _banner = [];
 
   // Request call categories
   _requestCategories() async {
     BlocProvider.of<MovieBloc>(context).add(const RequestGetMovieCategories());
+  }
+
+  // Request banner
+  _requestBanner() async {
+    BlocProvider.of<BannerBloc>(context).add(const RequestGetBanner());
   }
 
   @override
@@ -33,6 +43,7 @@ class _MainScreenState extends State<MainScreen>
     _tabController = TabController(length: 3, vsync: this);
     // Request data movie's categories
     _requestCategories();
+    _requestBanner();
     super.initState();
   }
 
@@ -62,12 +73,28 @@ class _MainScreenState extends State<MainScreen>
   // Build main UI
   _buildUI(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _customAppBar(context),
-          _movieStatus(context),
-          _movieGenre(context),
-        ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _customAppBar(context),
+              _movieStatus(context),
+              _movieGenre(context),
+              BlocConsumer<BannerBloc, BannerState>(
+                  builder: (context, state) => _bannerList(context),
+                  listener: (context, state) {
+                    if (state is BannerLoading) {
+                      print('dang load');
+                    } else if (state is BannerLoadSuccess) {
+                      print('thanh cong');
+                      _banner = state.movieBanner?.results ?? [];
+                    } else if (state is BannerLoadError) {
+                      print('message Error: ${state.messageBanner}');
+                    }
+                  }),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -159,20 +186,28 @@ class _MainScreenState extends State<MainScreen>
     );
   }
 
-  //Suggest List
-  Widget _suggestList(BuildContext context){
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index){
-        final banner = _banner[index];
-          return Column(
-            children: [
-              Container(
-                  child: ,
-              )
-            ],
+  //Banner List
+  Widget _bannerList(BuildContext context) {
+    return CarouselSlider.builder(
+        options: CarouselOptions(
+            enlargeCenterPage: true,
+            enableInfiniteScroll: false),
+        itemCount: _banner.length,
+        itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
+          final banner = _banner[itemIndex];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.network('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${banner.posterPath}',
+                fit: BoxFit.cover,),
+              ),
+            ),
           );
         }
-    );
+        );
   }
 }

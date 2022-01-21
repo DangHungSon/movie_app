@@ -3,5 +3,5 @@ import 'package:movie_app/models/banner_model.dart';
 
 abstract class ApiInterface {
   Future<MovieGenre> getGenreList();
-  Future<Banner> getBannerList();
+  Future<MovieBanner> getBannerList();
 }
