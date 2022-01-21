@@ -56,6 +56,19 @@ class _MainScreenState extends State<MainScreen>
         });
   }
 
+  // Build main UI
+  _buildUI(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          _customAppBar(context),
+          _movieStatus(context),
+          _movieGenre(context),
+        ],
+      ),
+    );
+  }
+
   //Custom app bar
   Widget _customAppBar(BuildContext context) {
     return Padding(
@@ -128,11 +141,11 @@ class _MainScreenState extends State<MainScreen>
           itemBuilder: (context, index) {
             final item = _genres[index];
             return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Container(
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    border: Border.all(color: Colors.black) ),
+                    border: Border.all(color: Colors.black)),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(item.name ?? ''),
@@ -140,19 +153,6 @@ class _MainScreenState extends State<MainScreen>
               ),
             );
           }),
-    );
-  }
-
-  // Build main UI
-  _buildUI(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          _customAppBar(context),
-          _movieStatus(context),
-          _movieGenre(context),
-        ],
-      ),
     );
   }
 }

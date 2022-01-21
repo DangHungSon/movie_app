@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/blocs/main_bloc.dart';
+import 'package:movie_app/screens/login_screen.dart';
 import 'package:movie_app/screens/main_screen.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         providers: MainBloc.allBlocs(),
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: MainScreen(),
+          home: LoginScreen(),
         ));
   }
 }
