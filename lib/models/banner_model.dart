@@ -71,7 +71,7 @@ class Results {
   String? releaseDate;
   String? title;
   bool? video;
-  double? voteAverage;
+  num? voteAverage;
   int? voteCount;
 
   Results(

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app/blocs/banner_bloc/banner_bloc.dart';
 import 'package:movie_app/blocs/banner_bloc/banner_events.dart';
 import 'package:movie_app/blocs/banner_bloc/banner_states.dart';
@@ -21,6 +22,8 @@ class _MainScreenState extends State<MainScreen>
     with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController();
   late final TabController _tabController;
+
+  int indexCenter = 0;
 
   // Categories
   List<Genres> _genres = [];
@@ -163,7 +166,8 @@ class _MainScreenState extends State<MainScreen>
 
   //Movie Genre
   Widget _movieGenre(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
       height: 65,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -188,26 +192,61 @@ class _MainScreenState extends State<MainScreen>
 
   //Banner List
   Widget _bannerList(BuildContext context) {
-    return CarouselSlider.builder(
-        options: CarouselOptions(
-            enlargeCenterPage: true,
-            enableInfiniteScroll: false),
-        itemCount: _banner.length,
-        itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
-          final banner = _banner[itemIndex];
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.network('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${banner.posterPath}',
-                fit: BoxFit.cover,),
-              ),
-            ),
-          );
-        }
-        );
+    if (_banner.isNotEmpty) {
+      Results? selectedBanner;
+
+      selectedBanner = _banner[indexCenter];
+
+      return Column(children: [
+        CarouselSlider.builder(
+            options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    indexCenter = index;
+                  });
+                },
+                enlargeCenterPage: true,
+                enableInfiniteScroll: true,
+                height: MediaQuery.of(context).size.height * 0.5,
+                viewportFraction: 0.6),
+            itemCount: _banner.length,
+            itemBuilder:
+                (BuildContext context, int itemIndex, int pageViewIndex) {
+              final banner = _banner[itemIndex];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: Image.network(
+                    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${banner.posterPath}',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              );
+            }),
+        selectedBanner != null
+            ? Text(
+                selectedBanner.title.toString(),
+                style: const TextStyle(
+                    fontWeight: FontWeight.w900, fontSize: 20, wordSpacing: 3),
+              )
+            : Container(),
+        selectedBanner != null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // SvgPicture.asset('assets/images/ic_star.svg'),
+                  const Icon(Icons.star,
+                  size: 16,
+                  color: Color(0xffFCC419),),
+                  const SizedBox(width: 5,),
+                  Text(selectedBanner.voteAverage.toString()),
+                ],
+              )
+            : Container(),
+      ]);
+    }
+    return Container();
   }
 }
