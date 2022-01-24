@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1062836812872",
+    "project_id": "movieapp-dea21",
+    "storage_bucket": "movieapp-dea21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062836812872:android:d379caef0333b466a02c7d",
+        "android_client_info": {
+          "package_name": "com.example.movie_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1062836812872-h8scs86kgcbir7i1u4377qb97msud24t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcU90gAmJh4Q0EqQAmcErcVkKlCqt8WZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1062836812872-h8scs86kgcbir7i1u4377qb97msud24t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

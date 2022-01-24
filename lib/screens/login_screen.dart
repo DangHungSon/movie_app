@@ -172,10 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(30))),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return const MainScreen();
-                  },), (route) => false);
+
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
