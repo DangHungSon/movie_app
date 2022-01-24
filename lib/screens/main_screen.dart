@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,7 +24,7 @@ class _MainScreenState extends State<MainScreen>
   final PageController _pageController = PageController();
   late final TabController _tabController;
 
-  int indexCenter = 0;
+  bool _isBannerLoading = false;
 
   // Categories
   List<Genres> _genres = [];
@@ -192,61 +193,56 @@ class _MainScreenState extends State<MainScreen>
 
   //Banner List
   Widget _bannerList(BuildContext context) {
-    if (_banner.isNotEmpty) {
-      Results? selectedBanner;
-
-      selectedBanner = _banner[indexCenter];
-
-      return Column(children: [
-        CarouselSlider.builder(
-            options: CarouselOptions(
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    indexCenter = index;
-                  });
-                },
-                enlargeCenterPage: true,
-                enableInfiniteScroll: true,
-                height: MediaQuery.of(context).size.height * 0.5,
-                viewportFraction: 0.6),
-            itemCount: _banner.length,
-            itemBuilder:
-                (BuildContext context, int itemIndex, int pageViewIndex) {
-              final banner = _banner[itemIndex];
-              return Container(
+    if (_isBannerLoading) return const Expanded(child: CupertinoActivityIndicator());
+    return Visibility(
+      visible: _banner.isNotEmpty,
+      child: CarouselSlider.builder(
+          options: CarouselOptions(
+              enlargeCenterPage: true,
+              enableInfiniteScroll: true,
+              height: MediaQuery.of(context).size.height * 0.6,
+              viewportFraction: 0.6),
+          itemCount: _banner.length,
+          itemBuilder:
+              (BuildContext context, int itemIndex, int pageViewIndex) {
+            final banner = _banner[itemIndex];
+            return GestureDetector(
+              onTap: (){
+                
+              },
+              child: Container(
                 margin: const EdgeInsets.only(bottom: 10),
-                child: ClipRRect(
-                  clipBehavior: Clip.antiAlias,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  child: Image.network(
-                    'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${banner.posterPath}',
-                    fit: BoxFit.contain,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Hero(
+                        tag: 'banner$itemIndex',
+                        child: Card(
+                          elevation: 30,
+                          shadowColor: Colors.grey,
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                          clipBehavior: Clip.antiAlias,
+                          child: Image.network(
+                            'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${banner.posterPath}',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(banner.title.toString()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/images/ic_star.svg'),
+                        Text(banner.voteAverage.toString())
+                      ],
+                    )
+                  ],
                 ),
-              );
-            }),
-        selectedBanner != null
-            ? Text(
-                selectedBanner.title.toString(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.w900, fontSize: 20, wordSpacing: 3),
-              )
-            : Container(),
-        selectedBanner != null
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // SvgPicture.asset('assets/images/ic_star.svg'),
-                  const Icon(Icons.star,
-                  size: 16,
-                  color: Color(0xffFCC419),),
-                  const SizedBox(width: 5,),
-                  Text(selectedBanner.voteAverage.toString()),
-                ],
-              )
-            : Container(),
-      ]);
-    }
-    return Container();
+              ),
+            );
+          }),
+    );
   }
 }
